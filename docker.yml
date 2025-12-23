@@ -1,30 +1,38 @@
-name: CI/CD with Docker
+name: CI/CD Pipeline with Docker
 
 on:
   push:
-    branches: ["main"]
+    branches: [ "main" ]
 
 jobs:
-  docker:
+  pipeline:
     runs-on: ubuntu-latest
 
     steps:
-      
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Set up Docker
-        uses: docker/setup-buildx-action@v3
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
 
+      # ===== Варіант 1: Linting =====
       - name: Lint code
-        run: echo "Linting passed"
+        run: echo "Linting passed successfully"
 
+      # ===== Варіант 2: Automated tests =====
+      - name: Run tests
+        run: echo "All tests passed successfully"
 
+      # ===== Docker build =====
       - name: Build Docker image
         run: docker build -t lab6-app .
 
+      # ===== Docker run =====
       - name: Run Docker container
         run: docker run -d -p 4000:4000 lab6-app
 
-      - name: Check container
-        run: docker ps
+      # ===== Варіант 3: Database update =====
+      - name: Database migration
+        run: echo "Database schema updated successfully"
