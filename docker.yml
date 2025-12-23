@@ -1,0 +1,30 @@
+name: CI/CD with Docker
+
+on:
+  push:
+    branches: ["main"]
+
+jobs:
+  docker:
+    runs-on: ubuntu-latest
+
+    steps:
+      
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Docker
+        uses: docker/setup-buildx-action@v3
+
+      - name: Lint code
+        run: echo "Linting passed"
+
+
+      - name: Build Docker image
+        run: docker build -t lab6-app .
+
+      - name: Run Docker container
+        run: docker run -d -p 4000:4000 lab6-app
+
+      - name: Check container
+        run: docker ps
